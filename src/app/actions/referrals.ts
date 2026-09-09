@@ -11,10 +11,10 @@ async function requireOfficeOrCeo(supabase: Awaited<ReturnType<typeof createClie
   if (!user) return { error: 'לא מחובר' as const };
   const { data: profileData } = await supabase
     .from('profiles')
-    .select('id, role, branch_id, sees_all_branches')
+    .select('id, role, branch_ids, sees_all_branches')
     .eq('id', user.id)
     .single();
-  const profile = profileData as { id: string; role: string; branch_id: string | null; sees_all_branches?: boolean } | null;
+  const profile = profileData as { id: string; role: string; branch_ids: string[]; sees_all_branches?: boolean } | null;
   if (!profile || (profile.role !== 'OFFICE' && profile.role !== 'CEO')) {
     return { error: 'רק משרד או מנכ"ל יכולים לנהל הפניות' as const };
   }
